@@ -1,25 +1,15 @@
 # PROYECTOCD
+
 Proyecto Ciencia de Datos Reproducible
 
-Versión de R
 
-```R
-> version
-               _                                
-platform       x86_64-w64-mingw32               
-arch           x86_64                           
-os             mingw32                          
-crt            ucrt                             
-system         x86_64, mingw32                  
-status                                          
-major          4                                
-minor          3.2                              
-year           2023                             
-month          10                               
-day            31                               
-svn rev        85441                            
-language       R                                
-version.string R version 4.3.2 (2023-10-31 ucrt)
-nickname       Eye Holes 
+Objetivo Principal:
+Analizar las percepciones y actitudes de la población europea hacia el cambio climático para identificar factores que influyan en la responsabilidad personal y la preocupación por el cambio climático, con el fin de diseñar políticas públicas efectivas.
 
-```
+Objetivos Específicos:
+Identificar cómo varían las percepciones sobre las causas del cambio climático entre diferentes grupos de edad.
+Evaluar el nivel de responsabilidad personal para reducir el cambio climático en relación con el nivel educativo y el género.
+Determinar diferencias significativas entre países en cuanto a la responsabilidad para reducir el cambio climático.
+Correlacionar valores sociales con la responsabilidad personal y la preocupación por el cambio climático.
+Identificar características de la población reticente a adoptar comportamientos sostenibles.
+
