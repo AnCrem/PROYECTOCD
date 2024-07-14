@@ -1,0 +1,16 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+
+
+
+\end{document}
+<<>>=
+if(!require(tinytex)) {
+  install.packages('tinytex')
+  library(tinytex)
+}
+@
+
