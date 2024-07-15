@@ -4,26 +4,26 @@ output: html_document
 date: "2024-07-14"
 ---
 
+## Cargar la base de datos original
+
+En esta sección, se cargará la base de datos original del Proyecto de Ciencia de datos Reproducible desde un archivo CSV.
+
 ```{r setup, include=FALSE}
+#Configuración inicial
 knitr::opts_chunk$set(echo = TRUE)
+
+#Cargar liberías necesarias
+library(tidyverse)
+library(readr)
+
+#Cargar la base de datos original
+ocd_data <- read.csv('1_Base de datos original ProyectoOCD', stringsAsFactors = FALSE)
+
+#Mostrar las primeras filas de la base de datos
+head(ocd_data)
+
+#Mostrar un resumen de la base de datos
+summary(ocd_data)
+
+
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
