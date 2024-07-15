@@ -1,6 +1,9 @@
 ---
 title: "Base de datos original"
-output: html_document
+author: "Ana Cremades"
+output: 
+  html_document: 
+    toc: true
 date: "2024-07-14"
 ---
 
@@ -17,13 +20,13 @@ library(tidyverse)
 library(readr)
 
 #Cargar la base de datos original
-ocd_data <- read.csv('1_Base de datos original ProyectoOCD', stringsAsFactors = FALSE)
+datos <- read.csv('1_Base de datos original ProyectoOCD.csv', stringsAsFactors = FALSE)
 
 #Mostrar las primeras filas de la base de datos
-head(ocd_data)
+print(head(datos))
 
 #Mostrar un resumen de la base de datos
-summary(ocd_data)
+summary(datos)
 
 
 ```

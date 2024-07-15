@@ -13,15 +13,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Cargar la base de datos original
 
-```{r cars}
-datos <- read.csv("1_Base de datos original ProyectoOCD.csv")
+```{r}
+datos <- read.csv('1_Base de datos original ProyectoOCD.csv', stringsAsFactors = FALSE)
+
 ```
 
 ### Mostrar las primeras filas de la base de datos y resumen de la base de datos
 
-```{r pressure}
-head(datos)
+```{r setup, include=FALSE}
+# Cargar los paquetes necesarios
+library(readr)
+library(dplyr)
 
+# Mostrar las primeras filas del dataset
+head(datos)
 ```
 ### 
 ```{r}
