@@ -359,14 +359,98 @@ display: none;
 <div id="TOC">
 <ul>
 <li><a href="#cargar-la-base-de-datos-original" id="toc-cargar-la-base-de-datos-original">Cargar la base de datos
-original</a></li>
+original</a>
+<ul>
+<li><a href="#cargar-librerías-necesarias" id="toc-cargar-librerías-necesarias">Cargar librerías
+necesarias</a></li>
+<li><a href="#cargar-base-de-datos-y-mostrar-los-datos" id="toc-cargar-base-de-datos-y-mostrar-los-datos">Cargar base de datos y
+mostrar los datos</a></li>
+</ul></li>
 </ul>
 </div>
 
-<div id="cargar-la-base-de-datos-original" class="section level2">
-<h2>Cargar la base de datos original</h2>
+<div id="cargar-la-base-de-datos-original" class="section level1">
+<h1>Cargar la base de datos original</h1>
 <p>En esta sección, se cargará la base de datos original del Proyecto de
 Ciencia de datos Reproducible desde un archivo CSV.</p>
+<div id="cargar-librerías-necesarias" class="section level3">
+<h3>Cargar librerías necesarias</h3>
+<pre class="r"><code>library(tidyverse)
+library(readr)</code></pre>
+</div>
+<div id="cargar-base-de-datos-y-mostrar-los-datos" class="section level3">
+<h3>Cargar base de datos y mostrar los datos</h3>
+<pre class="r"><code>#Cargar la base de datos original
+datos &lt;- read.csv(&#39;1_Base de datos original ProyectoOCD.csv&#39;, stringsAsFactors = FALSE)
+
+#Mostrar las primeras filas de la base de datos
+print(head(datos))</code></pre>
+<pre><code>##       name essround edition   proddate  idno cntry   dweight   pweight ccnthum
+## 1 ESS11e01       11       1 20.06.2024 50014    AT 1.1851145 0.3309145       4
+## 2 ESS11e01       11       1 20.06.2024 50030    AT 0.6098981 0.3309145       3
+## 3 ESS11e01       11       1 20.06.2024 50057    AT 1.3923296 0.3309145       4
+## 4 ESS11e01       11       1 20.06.2024 50106    AT 0.5560615 0.3309145       4
+## 5 ESS11e01       11       1 20.06.2024 50145    AT 0.7227953 0.3309145       5
+## 6 ESS11e01       11       1 20.06.2024 50158    AT 0.9926053 0.3309145       5
+##   ccrdprs wrclmch gndr agea eisced impricha ipeqopta ipmodsta impenva impfuna
+## 1       4       4    1   65      3        5        2        2       2       3
+## 2      10       5    2   21      5        4        2        2       1       2
+## 3       8       5    2   53      6        4        1        3       1       2
+## 4       6       4    2   78      5        4        2        2       2       3
+## 5      10       4    1   64      3        4        2        3       2       2
+## 6       8       4    2   59      4        2        2        3       2       2
+##           prob stratum psu
+## 1 0.0005786479     107 317
+## 2 0.0011243912      69 128
+## 3 0.0004925300      18 418
+## 4 0.0012332522     101 295
+## 5 0.0009487666     115 344
+## 6 0.0006908728       7 373</code></pre>
+<pre class="r"><code>#Mostrar un resumen de la base de datos
+summary(datos)</code></pre>
+<pre><code>##      name              essround     edition    proddate              idno      
+##  Length:22190       Min.   :11   Min.   :1   Length:22190       Min.   :50003  
+##  Class :character   1st Qu.:11   1st Qu.:1   Class :character   1st Qu.:59224  
+##  Mode  :character   Median :11   Median :1   Mode  :character   Median :68429  
+##                     Mean   :11   Mean   :1                      Mean   :68365  
+##                     3rd Qu.:11   3rd Qu.:1                      3rd Qu.:77589  
+##                     Max.   :11   Max.   :1                      Max.   :86480  
+##     cntry              dweight           pweight          ccnthum      
+##  Length:22190       Min.   :0.08669   Min.   :0.1442   Min.   : 1.000  
+##  Class :character   1st Qu.:0.90612   1st Qu.:0.2113   1st Qu.: 3.000  
+##  Mode  :character   Median :1.00000   Median :0.3309   Median : 3.000  
+##                     Mean   :1.00000   Mean   :0.8680   Mean   : 5.147  
+##                     3rd Qu.:1.02673   3rd Qu.:0.8899   3rd Qu.: 4.000  
+##                     Max.   :4.00186   Max.   :3.3243   Max.   :99.000  
+##     ccrdprs          wrclmch          gndr            agea       
+##  Min.   : 0.000   Min.   :1.00   Min.   :1.000   Min.   : 15.00  
+##  1st Qu.: 5.000   1st Qu.:3.00   1st Qu.:1.000   1st Qu.: 37.00  
+##  Median : 7.000   Median :3.00   Median :2.000   Median : 53.00  
+##  Mean   : 7.588   Mean   :3.27   Mean   :1.537   Mean   : 58.32  
+##  3rd Qu.: 8.000   3rd Qu.:4.00   3rd Qu.:2.000   3rd Qu.: 67.00  
+##  Max.   :99.000   Max.   :9.00   Max.   :2.000   Max.   :999.00  
+##      eisced          impricha         ipeqopta         ipmodsta     
+##  Min.   : 1.000   Min.   : 1.000   Min.   : 1.000   Min.   : 1.000  
+##  1st Qu.: 3.000   1st Qu.: 3.000   1st Qu.: 1.000   1st Qu.: 2.000  
+##  Median : 4.000   Median : 4.000   Median : 2.000   Median : 2.000  
+##  Mean   : 4.601   Mean   : 5.677   Mean   : 3.665   Mean   : 4.338  
+##  3rd Qu.: 6.000   3rd Qu.: 5.000   3rd Qu.: 2.000   3rd Qu.: 4.000  
+##  Max.   :99.000   Max.   :99.000   Max.   :99.000   Max.   :99.000  
+##     impenva          impfuna            prob              stratum     
+##  Min.   : 1.000   Min.   : 1.000   Min.   :2.768e-05   Min.   :  1.0  
+##  1st Qu.: 1.000   1st Qu.: 2.000   1st Qu.:3.424e-04   1st Qu.:193.0  
+##  Median : 2.000   Median : 3.000   Median :7.348e-04   Median :534.0  
+##  Mean   : 3.621   Mean   : 4.502   Mean   :7.571e-04   Mean   :496.1  
+##  3rd Qu.: 3.000   3rd Qu.: 4.000   3rd Qu.:1.046e-03   3rd Qu.:716.0  
+##  Max.   :99.000   Max.   :99.000   Max.   :8.759e-03   Max.   :877.0  
+##       psu       
+##  Min.   :    1  
+##  1st Qu.: 2371  
+##  Median : 5628  
+##  Mean   : 5729  
+##  3rd Qu.: 8269  
+##  Max.   :11887</code></pre>
+</div>
 </div>
 
 

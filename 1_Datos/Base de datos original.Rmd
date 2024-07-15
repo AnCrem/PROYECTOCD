@@ -7,19 +7,20 @@ output:
 date: "2024-07-14"
 ---
 
-## Cargar la base de datos original
+# Cargar la base de datos original
 
 En esta sección, se cargará la base de datos original del Proyecto de Ciencia de datos Reproducible desde un archivo CSV.
 
 ```{r setup, include=FALSE}
-#Configuración inicial
 knitr::opts_chunk$set(echo = TRUE)
-
-#Cargar liberías necesarias
+```
+### Cargar librerías necesarias
+```{r, message=FALSE}
 library(tidyverse)
 library(readr)
-
-#Cargar la base de datos original
+```
+### Cargar base de datos original y mostrar los datos
+```{r}
 datos <- read.csv('1_Base de datos original ProyectoOCD.csv', stringsAsFactors = FALSE)
 
 #Mostrar las primeras filas de la base de datos
@@ -27,6 +28,4 @@ print(head(datos))
 
 #Mostrar un resumen de la base de datos
 summary(datos)
-
-
 ```
