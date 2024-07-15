@@ -3,7 +3,7 @@ library(tidyverse)
 library(readr)
 
 # Definir la ruta del archivo CSV utilizando una ruta relativa
-archivo <- "datos/1_Base de datos original ProyectoOCD.csv"
+archivo <- "1_Datos/1_Base de datos original ProyectoOCD.csv"
 
 # Leer el archivo CSV sin convertir cadenas de caracteres a factores
 datos <- read.csv('1_Base de datos original ProyectoOCD.csv', stringsAsFactors = FALSE)
@@ -58,8 +58,9 @@ selected_vars <- selected_vars %>% mutate(
 )
 
 # Guardar el dataset depurado en un archivo CSV en la carpeta 'datos' del proyecto
-output_path <- "datos/datos_depurados.csv"
+output_path <- "1_Datos/3_Datos_depurados.csv"
 write_csv(selected_vars, output_path)
 
 # Confirmar la ubicación donde se guarda el archivo
 print(paste("El dataset depurado se ha guardado en:", output_path))
+
