@@ -9,14 +9,37 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+# Establecer el espejo de CRAN
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+# Instalar y cargar librerías necesarias
+if (!requireNamespace("flexdashboard", quietly = TRUE)) {
+  install.packages("flexdashboard")
+}
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+if (!requireNamespace("plotly", quietly = TRUE)) {
+  install.packages("plotly")
+}
+if (!requireNamespace("rnaturalearth", quietly = TRUE)) {
+  install.packages("rnaturalearth")
+}
+if (!requireNamespace("rnaturalearthdata", quietly = TRUE)) {
+  install.packages("rnaturalearthdata")
+}
+if (!requireNamespace("leaflet", quietly = TRUE)) {
+  install.packages("leaflet")
+}
+
 library(flexdashboard)
 library(tidyverse)
 library(plotly)
-library(leaflet)
-library(ggplot2)
-install.packages("rnaturalearth")
 library(rnaturalearth)
-
+library(rnaturalearthdata)
+library(leaflet)
+library(dplyr)
+library(sf)
 
 # Ajustar opciones globales de knitr para suprimir mensajes y avisos
 knitr::opts_chunk$set(
@@ -139,7 +162,7 @@ Row {data-height=50%}
 Column {data-width=50%}
 -------------------------------------
 
-### Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
+### Creencia sobre la Causa del Cambio Climático y Nivel de Preocupación por el Cambio Climático
 
 ```{r}
 
@@ -152,7 +175,7 @@ p1 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, le
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
-  labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Preocupacion") +
+  labs(x = "Creencia sobre la Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Preocupación") +
   scale_fill_manual(values = c("Bajo" = "#a1dab4", "Medio" = "#41b6c4", "Alto" = "#2c7fb8"))
 
 ggplotly(p1)
@@ -161,7 +184,7 @@ ggplotly(p1)
 ```
 
 
-### Causas del Cambio Climático y Nivel de Responsabilidad Personal para reducirlo
+### Creencia sobre la Causa del Cambio Climático y Nivel de Responsabilidad Personal para reducirlo
 ```{r}
 
 p2 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
@@ -169,7 +192,7 @@ p2 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, le
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
-  labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
+  labs(x = "Creencias sobre la Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
   scale_fill_manual(values = c("Bajo" = "#fbb4b9", "Medio" = "#f768a1", "Alto" = "#ae017e"))
 
 ggplotly(p2)
@@ -181,7 +204,7 @@ Row {data-height=50%}
 Column {data-width=50%}
 -------------------------------------
 
-### Causas del Cambio Climático y Grupos de Edad
+### Creencia sobre las Causas del Cambio Climático y Grupos de Edad
 
 ```{r}
 # Filtrar los datos para eliminar los NA en age_group y ccnthum
@@ -198,7 +221,7 @@ p3 <- ggplot(filtered_data, aes(x = age_group, fill = ccnthum)) +
   theme_minimal() +
   theme(plot.title = element_text(size = 20, face = "bold"),
         axis.text.x = element_text(angle = 90, hjust = 1)) +  # Poner las etiquetas verticales
-  labs(x = "Grupo de Edad", y = "Numero de Respuestas", fill = "Causa del Cambio Climatico") +
+  labs(x = "Grupo de Edad", y = "Conteo", fill = "Creencia sobre la Causa del Cambio Climatico") +
   scale_fill_manual(values = c("Completamente humano" = "#d73027", 
                                 "Principalmente humano" = "#fc8d59", 
                                 "Igualmente natural y humano" = "#fee08b", 
@@ -208,7 +231,7 @@ p3 <- ggplot(filtered_data, aes(x = age_group, fill = ccnthum)) +
 ggplotly(p3)
 ```
 
-### Nivel de Responsabilidad Personal y Nivel de Educación
+### Nivel de Responsabilidad Personal para reducir el cambio climático y Nivel de Educación
 ```{r}
 
 p4 <- ggplot(filtered_data, aes(x = education_level, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
@@ -229,7 +252,7 @@ Row {data-height=50%}
 
 Column {data-width=50%}
 -------------------------------------
-### Nivel de Responsabilidad Personal y Género
+### Nivel de Responsabilidad Personal para reducir el cambio climático por Género
 ```{r}
 
 p5 <- ggplot(filtered_data, aes(x = gndr, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
@@ -245,28 +268,83 @@ ggplotly(p5)
 
 ```
 
+Row {data-height=50%}
+-------------------------------------
+
 Column {data-width=50%}
 -------------------------------------
-### Nivel de Responsabilidad por país
+
+### Importancia de Ser Rico y Nivel de Responsabilidad personal para reducir el cambio climático
+
+```{r}
+ ggplot(filtered_data, aes(x = impricha, y = as.numeric(ccrdprs), fill = "Importancia de Ser Rico")) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "Importancia de Ser Rico", y = "Responsabilidad Personal") +
+    scale_fill_manual(values = c("Importancia de Ser Rico" = "#FFD700")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+          plot.title = element_text(size = 14, face = "bold"))
+```
+
+Column {data-width=50%}
+-------------------------------------
+### Igualdad y Oportunidades y Nivel de Responsabilidad personal para reducir el cambio climático
+```{r}
+ggplot(filtered_data, aes(x = ipeqopta, y = as.numeric(ccrdprs), fill = "Igualdad y Oportunidades")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Igualdad y Oportunidades", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Igualdad y Oportunidades" = "#1f78b4")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+
+```
+Column {data-width=50%}
+-------------------------------------
+### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
+```{r}
+ggplot(filtered_data, aes(x = ipmodsta, y = as.numeric(ccrdprs), fill = "Modestia")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Modestia", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Modestia" = "#dda0dd")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+```
+Column {data-width=50%}
+-------------------------------------
+### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
 
 ```{r}
 
-# Asegurarnos de que los paquetes necesarios están instalados
-if (!requireNamespace("rnaturalearth", quietly = TRUE)) {
-  install.packages("rnaturalearth")
-}
-if (!requireNamespace("rnaturalearthdata", quietly = TRUE)) {
-  install.packages("rnaturalearthdata")
-}
-if (!requireNamespace("leaflet", quietly = TRUE)) {
-  install.packages("leaflet")
-}
+ggplot(filtered_data, aes(x = impfuna, y = as.numeric(ccrdprs), fill = "Cuidado del Medio Ambiente")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Cuidado del Medio Ambiente", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Cuidado del Medio Ambiente" = "#66c2a5")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
 
-library(rnaturalearth)
-library(rnaturalearthdata)
-library(leaflet)
-library(dplyr)
-library(sf)
+```
+### Búsqueda de la diversión y Nivel de Responsabilidad personal para reducir el cambio climático
+
+```{r}
+
+
+```
+
+Page 4
+=====================================
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+### Nivel de Responsabilidad Personal para reducir el cambio climático por país
+
+```{r}
 
 # Filtrar y preparar los datos
 responsabilidad_pais <- datos %>%
