@@ -104,14 +104,24 @@ selected_vars <- selected_vars %>%
   )
 
 
-# Segmentar la variable 'ccrdprs' en tres categorías: Bajo, Medio y Alto
-filtered_vars <- filtered_vars %>%
-  mutate(ccrdprs_segmented = case_when(
-    as.numeric(ccrdprs) >= 0 & as.numeric(ccrdprs) <= 3 ~ "Bajo",
-    as.numeric(ccrdprs) >= 4 & as.numeric(ccrdprs) <= 7 ~ "Medio",
-    as.numeric(ccrdprs) >= 8 & as.numeric(ccrdprs) <= 10 ~ "Alto",
+# Paso 4: Segmentación de la variable 'wrclmch' en tres categorías: Bajo, Medio y Alto
+selected_vars <- selected_vars %>%
+  mutate(wrclmch_segmented = case_when(
+    wrclmch %in% c("Nada preocupado", "No muy preocupado") ~ "Bajo",
+    wrclmch == "Algo preocupado" ~ "Medio",
+    wrclmch %in% c("Muy preocupado", "Extremadamente preocupado") ~ "Alto",
     TRUE ~ NA_character_
   ))
+
+# Segmentación de la variable 'ccrdprs' (nivel de responsabilidad) en tres categorías: Bajo, Medio y Alto
+selected_vars <- selected_vars %>%
+  mutate(ccrdprs_segmented = case_when(
+    ccrdprs %in% c("Nada en absoluto", "1", "2", "3") ~ "Bajo",
+    ccrdprs %in% c("4", "5", "6", "7") ~ "Medio",
+    ccrdprs %in% c("8", "9", "Mucho") ~ "Alto",
+    TRUE ~ NA_character_
+  ))
+
 
 
 # Guardar el dataset depurado en un archivo CSV en la carpeta 'datos' del proyecto
