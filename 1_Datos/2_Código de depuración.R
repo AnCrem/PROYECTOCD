@@ -154,3 +154,14 @@ print(paste("El dataset depurado se ha guardado en:", output_path))
 
 # Verificar que las variables segmentadas están en los datos
 print(head(selected_vars))
+
+# Guardar el dataset depurado en un archivo CSV en la carpeta 'datos' del proyecto
+output_path <- "1_Datos/3_Datos_depurados.csv"
+write_csv(selected_vars, output_path)
+
+# Confirmar la ubicación donde se guarda el archivo
+print(paste("El dataset depurado se ha guardado en:", output_path))
+
+# Verificar que las variables segmentadas están en los datos
+print(head(selected_vars))
+print(colnames(selected_vars))
