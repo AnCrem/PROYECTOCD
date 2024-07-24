@@ -40,6 +40,7 @@ library(rnaturalearthdata)
 library(leaflet)
 library(dplyr)
 library(sf)
+library(gridExtra)
 
 # Ajustar opciones globales de knitr para suprimir mensajes y avisos
 knitr::opts_chunk$set(
@@ -95,8 +96,6 @@ filtered_data <- datos %>%
          !is.na(education_level) & 
          !is.na(gndr))
 
-# Verificar la estructura de los datos
-glimpse(datos)
 
 ```
 
@@ -328,12 +327,11 @@ leaflet(europe_data) %>%
 Page 4
 =====================================
 
-Row {data-height=50%}
+Row {data-height=20%}
 -------------------------------------
 
-Column {data-width=50%}
+Column {data-width=20%}
 -------------------------------------
-
 ### Importancia de Ser Rico y Nivel de Responsabilidad personal para reducir el cambio climático
 
 ```{r}
@@ -345,6 +343,7 @@ Column {data-width=50%}
     theme(axis.text.x = element_text(angle = 45, hjust = 1), 
           plot.title = element_text(size = 14, face = "bold"))
 ```
+
 ### Igualdad y Oportunidades y Nivel de Responsabilidad personal para reducir el cambio climático
 ```{r}
 ggplot(filtered_data, aes(x = ipeqopta, y = as.numeric(ccrdprs), fill = "Igualdad y Oportunidades")) +
@@ -357,10 +356,10 @@ ggplot(filtered_data, aes(x = ipeqopta, y = as.numeric(ccrdprs), fill = "Igualda
 
 
 ```
-Row {data-height=50%}
+Row {data-height=20%}
 -------------------------------------
 
-Column {data-width=50%}
+Column {data-width=20%}
 -------------------------------------
 ### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
 ```{r}
@@ -373,6 +372,7 @@ ggplot(filtered_data, aes(x = ipmodsta, y = as.numeric(ccrdprs), fill = "Modesti
         plot.title = element_text(size = 14, face = "bold"))
 
 ```
+
 ### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
 ```{r}
 
@@ -385,10 +385,10 @@ ggplot(filtered_data, aes(x = impfuna, y = as.numeric(ccrdprs), fill = "Cuidado 
         plot.title = element_text(size = 14, face = "bold"))
 
 ```
-Row {data-height=50%}
+Row {data-height=20%}
 -------------------------------------
 
-Column {data-width=50%}
+Column {data-width=20%}
 -------------------------------------
 ### Búsqueda de la diversión y Nivel de Responsabilidad personal para reducir el cambio climático
 
