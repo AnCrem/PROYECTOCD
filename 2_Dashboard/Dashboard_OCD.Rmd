@@ -13,9 +13,6 @@ library(flexdashboard)
 library(tidyverse)
 library(plotly)
 library(leaflet)
-
-
-
 ```
 Page 1
 =====================================
@@ -62,13 +59,15 @@ plot_ly(data, labels = ~Gender, values = ~Count, type = 'pie',
 ### Distribución por Nivel de Educación
 
 ```{r}
+
 education_data <- tibble(
-  Educación = c("Bajo", "Medio", "Alto"),
-  Conteo = c(4911, 4337, 1771)
+  Education = c("Bajo", "Medio", "Alto"),
+  Count = c(4911, 4337, 1771)
 )
 
-plot_ly(education_data, labels = ~Educación, values = ~Conteo, type = 'pie', 
-        textinfo = 'label+percent', insidetextorientation = 'radial')
-
+# Crear el gráfico de sectores con un gradiente de colores animado
+plot_ly(education_data, labels = ~Education, values = ~Count, type = 'pie', 
+        textinfo = 'label+percent', insidetextorientation = 'radial',
+        marker = list(colors = c('#FFB6C1', '#FF69B4', '#FF1493')))
 ```
 
