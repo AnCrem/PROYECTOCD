@@ -13,6 +13,23 @@ archivo <- "1_Datos/1_Base de datos original ProyectoOCD.csv"
 # Leer el archivo CSV sin convertir cadenas de caracteres a factores
 datos <- read.csv(archivo, stringsAsFactors = FALSE)
 
+# Leer el archivo CSV y especificar los tipos de datos
+datos <- read_csv(archivo, col_types = cols(
+  cntry = col_character(),
+  ccnthum = col_character(),
+  ccrdprs = col_character(),
+  wrclmch = col_character(),
+  gndr = col_character(),
+  agea = col_double(),
+  eisced = col_character(),
+  impricha = col_character(),
+  ipeqopta = col_character(),
+  ipmodsta = col_character(),
+  impfuna = col_character(),
+  impenva = col_character()
+))
+
+
 # Mostrar las primeras filas de la base de datos
 print(head(datos))
 
@@ -59,7 +76,7 @@ selected_vars <- selected_vars %>% mutate(
   impenva = factor(impenva, levels = 1:6, labels = c("Muy parecido a mi", "Parecido a mi", "Algo parecido a mi", "Un poco parecido a mi", "No parecido a mi", "Nada parecido a mi"))
 )
 
-### SEGMENTACION DE LAS VARIABLES ###
+### SEGMENTACIÓN DE LAS VARIABLES ##############################################################################################################################
 
 # Paso 1: Segmentación de la edad
 selected_vars <- selected_vars %>%
@@ -119,11 +136,13 @@ selected_vars <- selected_vars %>%
   ))
 
 
-# Asegurarse de que las columnas segmentadas sean factores
+# Convertir columnas segmentadas a factores
 selected_vars <- selected_vars %>%
   mutate(
     wrclmch_segmented = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")),
-    ccrdprs_segmented = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto"))
+    ccrdprs_segmented = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")),
+    age_group = factor(age_group, levels = c("Juventud", "Juventud Adulta", "Adultez", "Madurez", "3a Edad", "4a Edad")),
+    region = factor(region, levels = c("Nord Oeste", "Nord Este", "Nord Europa", "Centro Europa", "Sud Este"))
   )
 
 # Guardar el dataset depurado en un archivo CSV en la carpeta 'datos' del proyecto
@@ -132,3 +151,6 @@ write_csv(selected_vars, output_path)
 
 # Confirmar la ubicación donde se guarda el archivo
 print(paste("El dataset depurado se ha guardado en:", output_path))
+
+# Verificar que las variables segmentadas están en los datos
+print(head(selected_vars))
