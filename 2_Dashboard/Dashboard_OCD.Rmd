@@ -41,13 +41,13 @@ valueBox(round(edad_media, 1), "Media de Edad", icon = "fa-users", color = "#AFE
 ```
 ### Nivel de preocupación general por el cambio climático
 ```{r}
-preocupacion_mas_frecuente <- "Algo preocupado"
-valueBox(preocupacion_mas_frecuente, "Preocupación por el cambio climático", icon = "fa-leaf", color = "#AFEEEE")
+preocupacion_mas_frecuente <- names(sort(table(datos$wrclmch), decreasing = TRUE))[1]
+valueBox(preocupacion_mas_frecuente, "Preocupación más frecuente", icon = "fa-leaf", color = "#AFEEEE")
 ```
 ### Nivel de responsabilidad hacia la reducción del cambio climático
 ```{r}
-responsabilidad_mas_frecuente <- "Alta"
-valueBox(responsabilidad_mas_frecuente, "Responsabilidad para reducir el cambio climático", icon = "fa-hand-paper", color = "#AFEEEE")
+responsabilidad_mas_frecuente <- names(sort(table(datos$ccrdprs_segmented), decreasing = TRUE))[1]
+valueBox(responsabilidad_mas_frecuente, "Responsabilidad más frecuente", icon = "fa-hand-paper", color = "#AFEEEE")
 ```
 
 Row {data-height=50}
