@@ -1,0 +1,74 @@
+---
+title: "Creencias, actitudes y valores hacia el cambio climático"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+    social: menu
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(leaflet)
+
+
+
+```
+Page 1
+=====================================
+
+Row {data-height=50}
+-----------------------------------------------------------------------
+
+### Edad media
+
+```{r}
+edad_media <- 52.8
+valueBox(edad_media, "Media de Edad", icon = "fa-users", color = "#AFEEEE")
+```
+### Nivel de preocupación general por el cambio climático
+```{r}
+preocupacion_mas_frecuente <- "Algo preocupado"
+valueBox(preocupacion_mas_frecuente, "Preocupación por el cambio climático", icon = "fa-leaf", color = "#AFEEEE")
+```
+### Nivel de responsabilidad hacia la reducción del cambio climático
+```{r}
+responsabilidad_mas_frecuente <- "Alta"
+valueBox(responsabilidad_mas_frecuente, "Responsabilidad para reducir el cambio climático", icon = "fa-hand-paper", color = "#AFEEEE")
+```
+
+Row {data-height=50}
+-----------------------------------------------------------------------
+
+### Distribución por Género
+
+
+```{r}
+
+data <- tibble(
+  Gender = c("Male", "Female"),
+  Count = c(10271, 11919)
+)
+
+plot_ly(data, labels = ~Gender, values = ~Count, type = 'pie', 
+        textinfo = 'label+percent', insidetextorientation = 'radial',
+        marker = list(colors = c('#B0C4DE', '#D8BFD8')))
+
+```
+
+### Distribución por Nivel de Educación
+
+```{r}
+education_data <- tibble(
+  Educación = c("Bajo", "Medio", "Alto"),
+  Conteo = c(4911, 4337, 1771)
+)
+
+plot_ly(education_data, labels = ~Educación, values = ~Conteo, type = 'pie', 
+        textinfo = 'label+percent', insidetextorientation = 'radial')
+
+```
+

@@ -2,8 +2,14 @@
 library(tidyverse)
 library(readr)
 
+# Establecer el directorio de trabajo
+setwd("C:/Users/Iuliu/Documents/PROYECTOCD")
+
 # Definir la ruta del archivo CSV utilizando una ruta relativa
 archivo <- "1_Datos/1_Base de datos original ProyectoOCD.csv"
+
+# Leer el archivo CSV sin convertir cadenas de caracteres a factores
+datos <- read.csv(archivo, stringsAsFactors = FALSE)
 
 # Leer el archivo CSV sin convertir cadenas de caracteres a factores
 datos <- read.csv('1_Base de datos original ProyectoOCD.csv', stringsAsFactors = FALSE)
