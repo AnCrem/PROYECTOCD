@@ -22,6 +22,38 @@ knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
 # Leer el archivo CSV desde la subcarpeta '1_Datos'
 datos <- read_csv("1_Datos/3_Datos_depurados.csv")
 
+# Leer el archivo CSV desde la subcarpeta '1_Datos'
+datos <- read_csv("1_Datos/3_Datos_depurados.csv", col_types = cols(
+  cntry = col_character(),
+  ccnthum = col_character(),
+  ccrdprs = col_character(),
+  wrclmch = col_character(),
+  gndr = col_character(),
+  agea = col_double(),
+  eisced = col_character(),
+  impricha = col_character(),
+  ipeqopta = col_character(),
+  ipmodsta = col_character(),
+  impfuna = col_character(),
+  impenva = col_character(),
+  age_group = col_character(),
+  region = col_character(),
+  education_level = col_character(),
+  wrclmch_segmented = col_character(),
+  ccrdprs_segmented = col_character()
+), show_col_types = FALSE)
+
+# Convertir columnas a factores
+datos <- datos %>%
+  mutate(
+    gndr = factor(gndr, levels = c("Hombre", "Mujer")),
+    wrclmch_segmented = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")),
+    ccrdprs_segmented = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")),
+    age_group = factor(age_group, levels = c("Juventud", "Juventud Adulta", "Adultez", "Madurez", "3a Edad", "4a Edad")),
+    region = factor(region, levels = c("Nord Oeste", "Nord Este", "Nord Europa", "Centro Europa", "Sud Este")),
+    education_level = factor(education_level, levels = c("Bajo", "Medio", "Alto"))
+  )
+
 # Verificar la estructura de los datos
 glimpse(datos)
 
@@ -85,17 +117,28 @@ Page 2
 
 Row {data-height=500}
 -----------------------------------------------------------------------
-
 ## Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
 
 ```{r}
-cause_preocupation_data <- datos %>%
-  count(ccnthum, wrclmch_segmented) %>%
-  spread(key = wrclmch_segmented, value = n, fill = 0)
-
-ggplot(cause_preocupation_data, aes(fill=ccnthum, y=value, x=wrclmch_segmented)) + 
-  geom_bar(position="stack", stat="identity") +
+# Crear el gráfico con un gradiente de colores vibrantes y distinguibles
+ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+  geom_bar(position = "stack", stat = "count") +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Nivel de Preocupacion, y = "Conteo", fill = "Causa del Cambio Climático") +
-  scale_fill_manual(values=c("#48C9B0", "#5DADE2", "#5499C7", "#2471A3", "#1F618D"))
+  labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Preocupacion") +
+  scale_fill_manual(values = c("Bajo" = "#a1dab4", "Medio" = "#41b6c4", "Alto" = "#2c7fb8")) +
+  guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
+```
+## Nivel de responsabilidad personal y Nivel de Educación
+
+```{r}
+# Crear el gráfico
+ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+  geom_bar(position = "stack", stat = "count") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
+  scale_fill_manual(values = c("Bajo" = "#66c2a5", "Medio" = "#fc8d62", "Alto" = "#8da0cb")) +
+  guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
+
 ```
