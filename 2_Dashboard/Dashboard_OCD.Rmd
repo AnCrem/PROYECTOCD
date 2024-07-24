@@ -58,30 +58,27 @@ Row {data-height=50}
 
 ```{r}
 
-data <- tibble(
-  Gender = c("Male", "Female"),
-  Count = c(10271, 11919)
-)
+data_genero <- datos %>%
+  count(gndr) %>%
+  mutate(percentage = n / sum(n) * 100)
 
-plot_ly(data, labels = ~Gender, values = ~Count, type = 'pie', 
+plot_ly(data_genero, labels = ~gndr, values = ~percentage, type = 'pie', 
         textinfo = 'label+percent', insidetextorientation = 'radial',
         marker = list(colors = c('#B0C4DE', '#D8BFD8')))
-
 ```
 
 ### Distribución por Nivel de Educación
 
 ```{r}
 
-education_data <- tibble(
-  Education = c("Bajo", "Medio", "Alto"),
-  Count = c(4911, 4337, 1771)
-)
+data_educacion <- datos %>%
+  count(education_level) %>%
+  mutate(percentage = n / sum(n) * 100)
 
-# Crear el gráfico de sectores con un gradiente de colores animado
-plot_ly(education_data, labels = ~Education, values = ~Count, type = 'pie', 
+plot_ly(data_educacion, labels = ~education_level, values = ~percentage, type = 'pie', 
         textinfo = 'label+percent', insidetextorientation = 'radial',
-        marker = list(colors = c('#FFB6C1', '#FF69B4', '#FF1493')))
+        marker = list(colors = c('#ADD8E6', '#87CEFA', '#4682B4')))
+
 ```
 Page 2
 =====================================
@@ -92,15 +89,13 @@ Row {data-height=500}
 ## Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
 
 ```{r}
-cause_preocupation_data <- tibble(
-  Causa = rep(c("Procesos naturales", "Principalmente natural", "Igualmente natural y humano", "Principalmente humano", "Completamente humano"), each = 5),
-  Preocupacion = rep(c("Nada preocupado", "No muy preocupado", "Algo preocupado", "Muy preocupado", "Extremadamente preocupado"), times = 5),
-  Conteo = sample(100:500, 25)
-)
+cause_preocupation_data <- datos %>%
+  count(ccnthum, wrclmch_segmented) %>%
+  spread(key = wrclmch_segmented, value = n, fill = 0)
 
-ggplot(cause_preocupation_data, aes(fill=Preocupacion, y=Conteo, x=Causa)) + 
+ggplot(cause_preocupation_data, aes(fill=ccnthum, y=value, x=wrclmch_segmented)) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Causa del Cambio Climático", y = "Conteo", fill = "Nivel de Preocupación") +
+  labs(x = "Nivel de Preocupación", y = "Conteo", fill = "Causa del Cambio Climático") +
   scale_fill_manual(values=c("#48C9B0", "#5DADE2", "#5499C7", "#2471A3", "#1F618D"))
 ```
