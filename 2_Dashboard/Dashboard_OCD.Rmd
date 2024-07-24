@@ -14,6 +14,15 @@ library(tidyverse)
 library(plotly)
 library(leaflet)
 library(ggplot2)
+install.packages("rnaturalearth")
+library(rnaturalearth)
+
+
+# Ajustar opciones globales de knitr para suprimir mensajes y avisos
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE
+)
 
 # Establecer el directorio de trabajo de forma persistente
 knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
@@ -54,6 +63,15 @@ datos <- datos %>%
     education_level = factor(education_level, levels = c("Bajo", "Medio", "Alto"))
   )
 
+# Filtrar datos eliminando la opción de "No creo que el cambio climatico este ocurriendo" y valores NA
+filtered_data <- datos %>% 
+  filter(ccnthum != "No creo que el cambio climatico este ocurriendo" & 
+         !is.na(wrclmch_segmented) & 
+         !is.na(ccrdprs_segmented) & 
+         !is.na(age_group) & 
+         !is.na(education_level) & 
+         !is.na(gndr))
+
 # Verificar la estructura de los datos
 glimpse(datos)
 
@@ -74,12 +92,12 @@ valueBox(round(edad_media, 1), "Media de Edad", icon = "fa-users", color = "#AFE
 ### Nivel de preocupación general por el cambio climático
 ```{r}
 preocupacion_mas_frecuente <- names(sort(table(datos$wrclmch), decreasing = TRUE))[1]
-valueBox(preocupacion_mas_frecuente, "Preocupación más frecuente", icon = "fa-leaf", color = "#AFEEEE")
+valueBox(preocupacion_mas_frecuente, "Preocupación más frecuente por el cambio climático", icon = "fa-leaf", color = "#AFEEEE")
 ```
 ### Nivel de responsabilidad hacia la reducción del cambio climático
 ```{r}
 responsabilidad_mas_frecuente <- names(sort(table(datos$ccrdprs_segmented), decreasing = TRUE))[1]
-valueBox(responsabilidad_mas_frecuente, "Responsabilidad más frecuente", icon = "fa-hand-paper", color = "#AFEEEE")
+valueBox(responsabilidad_mas_frecuente, "Nivel de responsabilidad personal general para reducir el cambio climático", icon = "fa-hand-paper", color = "#AFEEEE")
 ```
 
 Row {data-height=50}
@@ -115,37 +133,139 @@ plot_ly(data_educacion, labels = ~education_level, values = ~percentage, type = 
 Page 2
 =====================================
 
-Row {data-height=500}
------------------------------------------------------------------------
-## Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+
+### Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
 
 ```{r}
-# Filtrar datos eliminando la opción de "No creo que el cambio climático esté ocurriendo" y valores NA
+
 filtered_data <- datos %>% 
   filter(ccnthum != "No creo que el cambio climatico este ocurriendo" & !is.na(wrclmch_segmented))
 
-# Crear el gráfico con un gradiente de colores vibrantes y distinguibles para el nivel de preocupación
-ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+
+p1 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")))) +
   geom_bar(position = "stack", stat = "count") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
   labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Preocupacion") +
-  scale_fill_manual(values = c("Bajo" = "#a1dab4", "Medio" = "#41b6c4", "Alto" = "#2c7fb8")) +
-  guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
+  scale_fill_manual(values = c("Bajo" = "#a1dab4", "Medio" = "#41b6c4", "Alto" = "#2c7fb8"))
+
+ggplotly(p1)
+
 
 ```
-## Causas del Cambio Climático y Nivel de Responsabilidad Personal para reducirlo
 
+
+### Causas del Cambio Climático y Nivel de Responsabilidad Personal para reducirlo
 ```{r}
-# Crear el gráfico con un gradiente de colores vibrantes y diferenciados para el nivel de responsabilidad personal
-ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+
+p2 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
   geom_bar(position = "stack", stat = "count") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
   labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
-  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f")) +
-  guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+
+ggplotly(p2)
 
 ```
-## Causas del Cambio Climático y Grupos de Edad
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+
+### Causas del Cambio Climático y Grupos de Edad
+
 ```{r}
+# Filtrar los datos para eliminar los NA en age_group y ccnthum
+filtered_data <- filtered_data %>%
+  filter(!is.na(age_group) & !is.na(ccnthum))
+
+# Ordenar los niveles de la variable ccnthum para que la leyenda esté ordenada
+filtered_data <- filtered_data %>%
+  mutate(ccnthum = factor(ccnthum, levels = c("Completamente humano", "Principalmente humano", "Igualmente natural y humano", "Principalmente natural", "Procesos naturales")))
+
+# Crear el gráfico interactivo con plotly
+p3 <- ggplot(filtered_data, aes(x = age_group, fill = ccnthum)) +
+  geom_bar(position = "stack", stat = "count") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 20, face = "bold"),
+        axis.text.x = element_text(angle = 90, hjust = 1)) +  # Poner las etiquetas verticales
+  labs(x = "Grupo de Edad", y = "Numero de Respuestas", fill = "Causa del Cambio Climatico") +
+  scale_fill_manual(values = c("Completamente humano" = "#d73027", 
+                                "Principalmente humano" = "#fc8d59", 
+                                "Igualmente natural y humano" = "#fee08b", 
+                                "Principalmente natural" = "#d9ef8b", 
+                                "Procesos naturales" = "#1a9850"))
+
+ggplotly(p3)
+```
+
+### Nivel de Responsabilidad Personal y Nivel de Educación
+```{r}
+
+p4 <- ggplot(filtered_data, aes(x = education_level, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+  geom_bar(position = "stack", stat = "count") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
+  labs(x = "Nivel de Educacion", y = "Conteo", fill = "Nivel de Responsabilidad") +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+
+ggplotly(p4)
+
+```
+
+Page 3
+=====================================
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+### Nivel de Responsabilidad Personal y Género
+```{r}
+
+p5 <- ggplot(filtered_data, aes(x = gndr, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
+  geom_bar(position = "stack", stat = "count") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
+  labs(x = "Genero", y = "Conteo", fill = "Nivel de Responsabilidad") +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+
+ggplotly(p5)
+
+
+```
+
+Column {data-width=50%}
+-------------------------------------
+```{r}
+# Crear un mapa coroplético
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Asumir que tenemos datos agregados por país
+country_data <- filtered_data %>%
+  group_by(cntry) %>%
+  summarise(mean_responsibility = mean(as.numeric(ccrdprs_segmented)))
+
+# Merge con datos geográficos
+world <- left_join(world, country_data, by = c("iso_a2" = "cntry"))
+
+# Crear el mapa
+ggplot(data = world) +
+  geom_sf(aes(fill = mean_responsibility)) +
+  scale_fill_viridis_c(option = "C") +
+  theme_minimal() +
+  labs(fill = "Nivel de Responsabilidad", x = "Longitud", y = "Latitud")
+```
