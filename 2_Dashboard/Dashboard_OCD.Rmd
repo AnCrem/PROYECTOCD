@@ -96,6 +96,6 @@ cause_preocupation_data <- datos %>%
 ggplot(cause_preocupation_data, aes(fill=ccnthum, y=value, x=wrclmch_segmented)) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  labs(x = "Nivel de Preocupación", y = "Conteo", fill = "Causa del Cambio Climático") +
+  labs(x = "Nivel de Preocupacion, y = "Conteo", fill = "Causa del Cambio Climático") +
   scale_fill_manual(values=c("#48C9B0", "#5DADE2", "#5499C7", "#2471A3", "#1F618D"))
 ```
