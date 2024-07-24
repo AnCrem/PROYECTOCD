@@ -267,75 +267,6 @@ ggplotly(p5)
 
 
 ```
-
-Row {data-height=50%}
--------------------------------------
-
-Column {data-width=50%}
--------------------------------------
-
-### Importancia de Ser Rico y Nivel de Responsabilidad personal para reducir el cambio climático
-
-```{r}
- ggplot(filtered_data, aes(x = impricha, y = as.numeric(ccrdprs), fill = "Importancia de Ser Rico")) +
-    geom_boxplot() +
-    theme_minimal() +
-    labs(x = "Importancia de Ser Rico", y = "Responsabilidad Personal") +
-    scale_fill_manual(values = c("Importancia de Ser Rico" = "#FFD700")) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-          plot.title = element_text(size = 14, face = "bold"))
-```
-
-Column {data-width=50%}
--------------------------------------
-### Igualdad y Oportunidades y Nivel de Responsabilidad personal para reducir el cambio climático
-```{r}
-ggplot(filtered_data, aes(x = ipeqopta, y = as.numeric(ccrdprs), fill = "Igualdad y Oportunidades")) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(x = "Igualdad y Oportunidades", y = "Responsabilidad Personal") +
-  scale_fill_manual(values = c("Igualdad y Oportunidades" = "#1f78b4")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        plot.title = element_text(size = 14, face = "bold"))
-
-
-```
-Column {data-width=50%}
--------------------------------------
-### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
-```{r}
-ggplot(filtered_data, aes(x = ipmodsta, y = as.numeric(ccrdprs), fill = "Modestia")) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(x = "Modestia", y = "Responsabilidad Personal") +
-  scale_fill_manual(values = c("Modestia" = "#dda0dd")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        plot.title = element_text(size = 14, face = "bold"))
-
-```
-Column {data-width=50%}
--------------------------------------
-### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
-
-```{r}
-
-ggplot(filtered_data, aes(x = impfuna, y = as.numeric(ccrdprs), fill = "Cuidado del Medio Ambiente")) +
-  geom_boxplot() +
-  theme_minimal() +
-  labs(x = "Cuidado del Medio Ambiente", y = "Responsabilidad Personal") +
-  scale_fill_manual(values = c("Cuidado del Medio Ambiente" = "#66c2a5")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
-        plot.title = element_text(size = 14, face = "bold"))
-
-```
-### Búsqueda de la diversión y Nivel de Responsabilidad personal para reducir el cambio climático
-
-```{r}
-
-
-```
-
-Page 4
 =====================================
 Row {data-height=50%}
 -------------------------------------
@@ -343,7 +274,6 @@ Row {data-height=50%}
 Column {data-width=50%}
 -------------------------------------
 ### Nivel de Responsabilidad Personal para reducir el cambio climático por país
-
 ```{r}
 
 # Filtrar y preparar los datos
@@ -394,3 +324,83 @@ leaflet(europe_data) %>%
   )
 
 ```
+
+Page 4
+=====================================
+
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+
+### Importancia de Ser Rico y Nivel de Responsabilidad personal para reducir el cambio climático
+
+```{r}
+ ggplot(filtered_data, aes(x = impricha, y = as.numeric(ccrdprs), fill = "Importancia de Ser Rico")) +
+    geom_boxplot() +
+    theme_minimal() +
+    labs(x = "Importancia de Ser Rico", y = "Responsabilidad Personal") +
+    scale_fill_manual(values = c("Importancia de Ser Rico" = "#FFD700")) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+          plot.title = element_text(size = 14, face = "bold"))
+```
+### Igualdad y Oportunidades y Nivel de Responsabilidad personal para reducir el cambio climático
+```{r}
+ggplot(filtered_data, aes(x = ipeqopta, y = as.numeric(ccrdprs), fill = "Igualdad y Oportunidades")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Igualdad y Oportunidades", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Igualdad y Oportunidades" = "#1f78b4")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+
+```
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
+```{r}
+ggplot(filtered_data, aes(x = ipmodsta, y = as.numeric(ccrdprs), fill = "Modestia")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Modestia", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Modestia" = "#dda0dd")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+```
+### Modestia y Nivel de Responsabilidad personal para reducir el cambio climático
+```{r}
+
+ggplot(filtered_data, aes(x = impfuna, y = as.numeric(ccrdprs), fill = "Cuidado del Medio Ambiente")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Cuidado del Medio Ambiente", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Cuidado del Medio Ambiente" = "#66c2a5")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+```
+Row {data-height=50%}
+-------------------------------------
+
+Column {data-width=50%}
+-------------------------------------
+### Búsqueda de la diversión y Nivel de Responsabilidad personal para reducir el cambio climático
+
+```{r}
+ggplot(filtered_data, aes(x = impenva, y = as.numeric(ccrdprs), fill = "Búsqueda de Diversión")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Búsqueda de Diversión", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Búsqueda de Diversión" = "#fb9a99")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1), 
+        plot.title = element_text(size = 14, face = "bold"))
+
+```
+
+
