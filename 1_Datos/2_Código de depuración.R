@@ -118,6 +118,14 @@ selected_vars <- selected_vars %>%
     TRUE ~ NA_character_
   ))
 
+
+# Asegurarse de que las columnas segmentadas sean factores
+selected_vars <- selected_vars %>%
+  mutate(
+    wrclmch_segmented = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")),
+    ccrdprs_segmented = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto"))
+  )
+
 # Guardar el dataset depurado en un archivo CSV en la carpeta 'datos' del proyecto
 output_path <- "1_Datos/3_Datos_depurados.csv"
 write_csv(selected_vars, output_path)
