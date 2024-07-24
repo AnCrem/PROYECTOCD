@@ -170,7 +170,7 @@ p2 <- ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, le
   theme(axis.text.x = element_text(angle = 45, hjust = 1),
         plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
   labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
-  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+  scale_fill_manual(values = c("Bajo" = "#fbb4b9", "Medio" = "#f768a1", "Alto" = "#ae017e"))
 
 ggplotly(p2)
 
@@ -216,7 +216,7 @@ p4 <- ggplot(filtered_data, aes(x = education_level, fill = factor(ccrdprs_segme
   theme_minimal() +
   theme(plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
   labs(x = "Nivel de Educacion", y = "Conteo", fill = "Nivel de Responsabilidad") +
-  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+  scale_fill_manual(values = c("Bajo" = "#fbb4b9", "Medio" = "#f768a1", "Alto" = "#ae017e"))
 
 ggplotly(p4)
 
@@ -237,7 +237,8 @@ p5 <- ggplot(filtered_data, aes(x = gndr, fill = factor(ccrdprs_segmented, level
   theme_minimal() +
   theme(plot.title = element_text(size = 20, face = "bold")) +  # Ajusta el tamaño y grosor del título
   labs(x = "Genero", y = "Conteo", fill = "Nivel de Responsabilidad") +
-  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f"))
+  scale_fill_manual(values = c("Bajo" = "#fbb4b9", "Medio" = "#f768a1", "Alto" = "#ae017e"))
+
 
 ggplotly(p5)
 
