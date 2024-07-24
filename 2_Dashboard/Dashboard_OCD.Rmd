@@ -246,26 +246,72 @@ ggplotly(p5)
 
 Column {data-width=50%}
 -------------------------------------
+### Nivel de Responsabilidad por país
+
 ```{r}
-# Crear un mapa coroplético
-library(sf)
+
+# Asegurarnos de que los paquetes necesarios están instalados
+if (!requireNamespace("rnaturalearth", quietly = TRUE)) {
+  install.packages("rnaturalearth")
+}
+if (!requireNamespace("rnaturalearthdata", quietly = TRUE)) {
+  install.packages("rnaturalearthdata")
+}
+if (!requireNamespace("leaflet", quietly = TRUE)) {
+  install.packages("leaflet")
+}
+
 library(rnaturalearth)
 library(rnaturalearthdata)
+library(leaflet)
+library(dplyr)
+library(sf)
 
-world <- ne_countries(scale = "medium", returnclass = "sf")
-
-# Asumir que tenemos datos agregados por país
-country_data <- filtered_data %>%
+# Filtrar y preparar los datos
+responsabilidad_pais <- datos %>%
+  filter(!is.na(ccrdprs)) %>%
   group_by(cntry) %>%
-  summarise(mean_responsibility = mean(as.numeric(ccrdprs_segmented)))
+  summarize(mean_responsibility = mean(as.numeric(ccrdprs), na.rm = TRUE))
 
-# Merge con datos geográficos
-world <- left_join(world, country_data, by = c("iso_a2" = "cntry"))
+# Obtener los datos geoespaciales de los países de Europa
+europe <- ne_countries(continent = "Europe", scale = "medium", returnclass = "sf")
 
-# Crear el mapa
-ggplot(data = world) +
-  geom_sf(aes(fill = mean_responsibility)) +
-  scale_fill_viridis_c(option = "C") +
-  theme_minimal() +
-  labs(fill = "Nivel de Responsabilidad", x = "Longitud", y = "Latitud")
+# Unir los datos de responsabilidad personal con los datos geoespaciales
+europe_data <- left_join(europe, responsabilidad_pais, by = c("iso_a2" = "cntry"))
+
+# Crear una paleta de colores personalizada
+color_palette <- colorBin(palette = c("#fbb4b9", "#f768a1", "#ae017e"), domain = europe_data$mean_responsibility, bins = 5)
+
+# Crear el mapa interactivo
+leaflet(europe_data) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~color_palette(mean_responsibility),
+    weight = 1,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE
+    ),
+    label = ~paste(name, "<br>", "Responsabilidad: ", round(mean_responsibility, 2)),
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto"
+    )
+  ) %>%
+  addLegend(
+    pal = color_palette,
+    values = ~mean_responsibility,
+    opacity = 0.7,
+    title = "Nivel de Responsabilidad",
+    position = "bottomright"
+  )
+
 ```
