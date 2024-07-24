@@ -36,8 +36,8 @@ Row {data-height=50}
 ### Edad media
 
 ```{r}
-edad_media <- 52.8
-valueBox(edad_media, "Media de Edad", icon = "fa-users", color = "#AFEEEE")
+edad_media <- mean(datos$agea, na.rm = TRUE)
+valueBox(round(edad_media, 1), "Media de Edad", icon = "fa-users", color = "#AFEEEE")
 ```
 ### Nivel de preocupación general por el cambio climático
 ```{r}
