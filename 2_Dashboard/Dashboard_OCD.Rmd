@@ -120,7 +120,11 @@ Row {data-height=500}
 ## Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
 
 ```{r}
-# Crear el gráfico con un gradiente de colores vibrantes y distinguibles
+# Filtrar datos eliminando la opción de "No creo que el cambio climático esté ocurriendo" y valores NA
+filtered_data <- datos %>% 
+  filter(ccnthum != "No creo que el cambio climatico este ocurriendo" & !is.na(wrclmch_segmented))
+
+# Crear el gráfico con un gradiente de colores vibrantes y distinguibles para el nivel de preocupación
 ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, levels = c("Bajo", "Medio", "Alto")))) +
   geom_bar(position = "stack", stat = "count") +
   theme_minimal() +
@@ -128,17 +132,18 @@ ggplot(filtered_data, aes(x = ccnthum, fill = factor(wrclmch_segmented, levels =
   labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Preocupacion") +
   scale_fill_manual(values = c("Bajo" = "#a1dab4", "Medio" = "#41b6c4", "Alto" = "#2c7fb8")) +
   guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
+
 ```
-## Nivel de responsabilidad personal y Nivel de Educación
+## Causas del Cambio Climático y Nivel de Responsabilidad Personal para reducirlo
 
 ```{r}
-# Crear el gráfico
+# Crear el gráfico con un gradiente de colores vibrantes y diferenciados para el nivel de responsabilidad personal
 ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels = c("Bajo", "Medio", "Alto")))) +
   geom_bar(position = "stack", stat = "count") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   labs(x = "Causa del Cambio Climatico", y = "Conteo", fill = "Nivel de Responsabilidad") +
-  scale_fill_manual(values = c("Bajo" = "#66c2a5", "Medio" = "#fc8d62", "Alto" = "#8da0cb")) +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f")) +
   guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
 
 ```
