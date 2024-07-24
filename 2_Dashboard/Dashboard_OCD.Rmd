@@ -147,3 +147,5 @@ ggplot(filtered_data, aes(x = ccnthum, fill = factor(ccrdprs_segmented, levels =
   guides(fill = guide_legend(reverse = FALSE)) # Asegura que la leyenda esté en el orden correcto
 
 ```
+## Causas del Cambio Climático y Grupos de Edad
+```{r}
