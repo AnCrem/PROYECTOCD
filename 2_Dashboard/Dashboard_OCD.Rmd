@@ -13,6 +13,7 @@ library(flexdashboard)
 library(tidyverse)
 library(plotly)
 library(leaflet)
+library(ggplot2)
 ```
 Page 1
 =====================================
@@ -70,4 +71,24 @@ plot_ly(education_data, labels = ~Education, values = ~Count, type = 'pie',
         textinfo = 'label+percent', insidetextorientation = 'radial',
         marker = list(colors = c('#FFB6C1', '#FF69B4', '#FF1493')))
 ```
+Page 2
+=====================================
 
+Row {data-height=500}
+-----------------------------------------------------------------------
+
+## Causas del Cambio Climático y Nivel de Preocupación por el Cambio Climático
+
+```{r}
+cause_preocupation_data <- tibble(
+  Causa = rep(c("Procesos naturales", "Principalmente natural", "Igualmente natural y humano", "Principalmente humano", "Completamente humano"), each = 5),
+  Preocupacion = rep(c("Nada preocupado", "No muy preocupado", "Algo preocupado", "Muy preocupado", "Extremadamente preocupado"), times = 5),
+  Conteo = sample(100:500, 25)
+)
+
+ggplot(cause_preocupation_data, aes(fill=Preocupacion, y=Conteo, x=Causa)) + 
+  geom_bar(position="stack", stat="identity") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Causa del Cambio Climático", y = "Conteo", fill = "Nivel de Preocupación") +
+  scale_fill_manual(values=c("#48C9B0", "#5DADE2", "#5499C7", "#2471A3", "#1F618D"))
+```
