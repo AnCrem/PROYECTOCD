@@ -14,7 +14,19 @@ library(tidyverse)
 library(plotly)
 library(leaflet)
 library(ggplot2)
+
+# Establecer el directorio de trabajo de forma persistente
+knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
 ```
+```{r load-data}
+# Leer el archivo CSV desde la subcarpeta '1_Datos'
+datos <- read_csv("1_Datos/3_Datos_depurados.csv")
+
+# Verificar la estructura de los datos
+glimpse(datos)
+
+```
+
 Page 1
 =====================================
 
