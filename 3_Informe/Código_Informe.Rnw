@@ -19,6 +19,7 @@ library(readr)
 library(gridExtra)
 library(sf)
 library(rnaturalearth)
+install.packages("tinytex")
 
 # Establecer el directorio de trabajo de forma persistente
 knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
