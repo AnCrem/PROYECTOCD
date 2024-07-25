@@ -1,0 +1,181 @@
+
+
+title: \textbf{" Informe técnico del Proyecto OCD: Creencias, actitudes y valores hacia el cambio climático"}
+author: "Ana Cremades Carreño"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output: pdf_document
+
+<<>>= ```{r setup, include=FALSE}
+git remote add origin https://github.com/AnCrem/PROYECTOCD.git
+
+detach("package:knitr", unload = TRUE)
+detach("package:kableExtra", unload = TRUE)
+install.packages("xfun")
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(gridExtra)
+library(sf)
+library(rnaturalearth)
+
+# Establecer el directorio de trabajo de forma persistente
+knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
+
+# Cargar los datos
+datos <- read_csv("1_Datos/3_Datos_depurados.csv")
+
+# Transformar y limpiar los datos
+filtered_data <- datos %>%
+  mutate(ccrdprs = as.numeric(ccrdprs)) %>%
+  filter(!is.na(ccrdprs))
+
+
+# Establecer el directorio de trabajo de forma persistente
+knitr::opts_knit$set(root.dir = "C:/Users/Iuliu/Documents/PROYECTOCD")
+# Cargar los datos
+datos <- read_csv("1_Datos/3_Datos_depurados.csv")
+
+# Limpiar y transformar los datos
+datos <- datos %>%
+  mutate(ccrdprs = as.numeric(ccrdprs)) %>%
+  filter(!is.na(ccrdprs))
+
+# Tabla resumen con algunos indicadores
+tabla_resumen <- datos %>%
+  summarise(
+    Media_Edad = mean(agea, na.rm = TRUE),
+    Mediana_Edad = median(agea, na.rm = TRUE),
+    Proporcion_Hombres = mean(gndr == "Hombre", na.rm = TRUE),
+    Proporcion_Mujeres = mean(gndr == "Mujer", na.rm = TRUE)
+  )
+
+# Gráficos
+grafico1 <- ggplot(datos, aes(x = ccnthum, fill = wrclmch_segmented)) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  labs(
+    x = "Causa del Cambio Climático",
+    y = "Conteo",
+    fill = "Nivel de Preocupación"
+  ) +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grafico2 <- ggplot(datos, aes(x = age_group, fill = ccnthum)) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  labs(
+    x = "Grupo de Edad",
+    y = "Número de Respuestas",
+    fill = "Causa del Cambio Climático"
+  ) +
+  scale_fill_manual(values = c("Completamente humano" = "#084081", "Principalmente humano" = "#0868ac", "Igualmente natural y humano" = "#2b8cbe", "Principalmente natural" = "#4eb3d3", "Procesos naturales" = "#7bccc4"))
+
+# Agregar los gráficos adicionales
+grafico3 <- ggplot(filtered_data, aes(x = agea, y = ccrdprs)) +
+  geom_point(alpha = 0.6, color = "blue") +
+  theme_minimal() +
+  labs(x = "Edad", y = "Nivel de Responsabilidad")
+
+grafico4 <- ggplot(filtered_data, aes(x = cntry, fill = mean_responsibility)) +
+  geom_sf() +
+  theme_minimal() +
+  scale_fill_gradient(low = "lightpink", high = "deeppink") +
+  labs(fill = "Nivel de Responsabilidad", x = "Longitud", y = "Latitud")
+
+grafico5 <- ggplot(filtered_data, aes(x = impricha, y = ccrdprs, fill = "Importancia de Ser Rico")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Importancia de Ser Rico", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Importancia de Ser Rico" = "#FFD700"))
+
+grafico6 <- ggplot(filtered_data, aes(x = ipeqopta, y = ccrdprs, fill = "Igualdad y Oportunidades")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Igualdad y Oportunidades", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Igualdad y Oportunidades" = "#1E90FF"))
+
+grafico7 <- ggplot(filtered_data, aes(x = ipmodsta, y = ccrdprs, fill = "Modestia")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Modestia", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Modestia" = "#8A2BE2"))
+
+grafico8 <- ggplot(filtered_data, aes(x = impfuna, y = ccrdprs, fill = "Cuidado del Medio Ambiente")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Cuidado del Medio Ambiente", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Cuidado del Medio Ambiente" = "#32CD32"))
+
+grafico9 <- ggplot(filtered_data, aes(x = impenva, y = ccrdprs, fill = "Búsqueda de Diversión")) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(x = "Búsqueda de Diversión", y = "Responsabilidad Personal") +
+  scale_fill_manual(values = c("Búsqueda de Diversión" = "#FF69B4"))
+@
+
+---
+title: "Informe Técnico del Proyecto OCD"
+author: "Tu Nombre"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(gridExtra)
+
+# Cargar los datos
+datos <- read_csv("ruta/a/tu/dataset.csv")
+
+# Limpiar y transformar los datos
+datos <- datos %>%
+  mutate(ccrdprs = as.numeric(ccrdprs)) %>%
+  filter(!is.na(ccrdprs))
+
+# Tabla resumen con algunos indicadores
+tabla_resumen <- datos %>%
+  summarise(
+    Media_Edad = mean(agea, na.rm = TRUE),
+    Mediana_Edad = median(agea, na.rm = TRUE),
+    Proporcion_Hombres = mean(gndr == "Hombre", na.rm = TRUE),
+    Proporcion_Mujeres = mean(gndr == "Mujer", na.rm = TRUE)
+  )
+
+# Gráficos
+grafico1 <- ggplot(datos, aes(x = ccnthum, fill = wrclmch_segmented)) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  labs(
+    x = "Causa del Cambio Climático",
+    y = "Conteo",
+    fill = "Nivel de Preocupación"
+  ) +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grafico2 <- ggplot(datos, aes(x = age_group, fill = ccnthum)) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  labs(
+    x = "Grupo de Edad",
+    y = "Número de Respuestas",
+    fill = "Causa del Cambio Climático"
+  ) +
+  scale_fill_manual(values = c("Completamente humano" = "#084081", "Principalmente humano" = "#0868ac", "Igualmente natural y humano" = "#2b8cbe", "Principalmente natural" = "#4eb3d3", "Procesos naturales" = "#7bccc4"))
+  
+  kable(tabla_resumen, format = "latex", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("hold_position", "striped"))
+  
+  print(grafico1)
+  print(grafico2)
+  
+
+```r
+rmarkdown::render("C:\Users\Iuliu\Documents\PROYECTOCD\3_Informe\Código_Informe")
