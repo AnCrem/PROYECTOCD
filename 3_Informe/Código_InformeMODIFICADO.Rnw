@@ -1,0 +1,58 @@
+\documentclass{article}
+
+\begin{document}
+
+\title{Informe técnico del Proyecto OCD: Creencias, actitudes y valores hacia el cambio climático}
+\author{Ana Cremades Carreño}
+\date{today}
+
+\maketitle
+
+<<echo=FALSE,warning=FALSE,message=FALSE>>=
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(gridExtra)
+library(sf)
+library(rnaturalearth)
+library(here)
+library(xtable)
+@
+
+
+\section{Una tabla}
+
+<<echo=FALSE,results='asis',warning=FALSE,message=FALSE>>=
+# Cargar los datos
+datos <- read_csv(here::here("1_Datos","3_Datos_depurados.csv"))
+
+tabla_resumen <- datos %>%
+  summarise(
+    Media_Edad = mean(agea, na.rm = TRUE),
+    Mediana_Edad = median(agea, na.rm = TRUE),
+    Proporcion_Hombres = mean(gndr == "Hombre", na.rm = TRUE),
+    Proporcion_Mujeres = mean(gndr == "Mujer", na.rm = TRUE)
+  )
+xtable(tabla_resumen)
+@
+
+
+\section{Un gráfico}
+
+<<>>=
+ggplot(datos, aes(x = ccnthum, fill = wrclmch_segmented)) +
+  geom_bar(position = "stack") +
+  theme_minimal() +
+  labs(
+    x = "Causa del Cambio Climático",
+    y = "Conteo",
+    fill = "Nivel de Preocupación"
+  ) +
+  scale_fill_manual(values = c("Bajo" = "#fdcc8a", "Medio" = "#fc8d59", "Alto" = "#d7301f")) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+@
+
+
+\end{document}
